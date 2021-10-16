@@ -1,4 +1,4 @@
-# Toast
+Toast
 ===
 
 *A tool to manage continuous deployments of web apps using Ansible*
