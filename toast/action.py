@@ -40,8 +40,8 @@ def update_repository(s: dict):
         else:
             raise Exception(f"No branch defined for repository {s['path']} and could not find a default one")
     
-    repo.checkout(refspec)
-    # this doesn't work, can't fathom why
-    # porcelain time
+    reference = repo.branches.get(refspec)
+
+    repo.checkout(reference)
 
 
