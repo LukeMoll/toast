@@ -6,7 +6,7 @@ import pygit2
 def clone_repository(s: dict):
     pass
 
-def get_remote(repo : pygit2.Repository, s: dict):
+def get_remote(repo : pygit2.Repository, s: dict) -> pygit2.Remote:
     remote_name = s.get("remote-name", "origin")
 
     try:
@@ -14,19 +14,7 @@ def get_remote(repo : pygit2.Repository, s: dict):
     except KeyError:
         raise Exception(f"Repository {s['path']} has no remote {remote_name}")
 
-
-def update_repository(s: dict):
-    if not os.path.exists(s['path']):
-        raise FileNotFoundError(s['path'])
-        # TODO: handle this...
-        clone_repository(s)
-
-    repo = pygit2.Repository(s['path'])
-    remote = get_remote(repo, s)
-
-    # will FAIL if it needs authentication (eg SSH, private repo with HTTPS)
-    remote.fetch()
-
+def get_remote_branch(repo : pygit2.Repository, s: dict, remote: pygit2.Remote) -> pygit2._pygit2.Branch:
     if "branch" in s:
         refspec = f"{remote.name}/{s['branch']}"
         if refspec not in repo.branches:
@@ -40,8 +28,23 @@ def update_repository(s: dict):
         else:
             raise Exception(f"No branch defined for repository {s['path']} and could not find a default one")
     
-    reference = repo.branches.get(refspec)
+    return repo.branches.get(refspec)
 
-    repo.checkout(reference)
+def update_repository(s: dict):
+    if not os.path.exists(s['path']):
+        raise FileNotFoundError(s['path'])
+        # TODO: handle this...
+        clone_repository(s)
+
+    repo = pygit2.Repository(s['path'])
+    remote = get_remote(repo, s)
+
+    # will FAIL if it needs authentication (eg SSH, private repo with HTTPS)
+    remote.fetch()
+
+    branch = get_remote_branch(repo, s, remote)
+
+    # could fail if working tree isn't clean
+    repo.checkout(branch)
 
 

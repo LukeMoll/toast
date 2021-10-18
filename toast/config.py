@@ -66,7 +66,7 @@ def get_slice(repo_fullname : str) -> Union[dict,None]:
             return s
     return None
 
-def get_toastfile(path : str) -> Union[dict,None]:
+def get_toastfile(path : str) -> Union[str,None]:
     filenames = ["toastfile.yml", "toastfile.yaml", ".toastfile.yml", ".toastfile.yaml", ".toastfile"]
 
     if not os.path.exists(path) or not os.path.isdir(path):
@@ -76,3 +76,5 @@ def get_toastfile(path : str) -> Union[dict,None]:
     for fn in filenames:
         if os.path.exists(os.path.join(path, fn)):
             return os.path.join(path, fn)
+    
+    return None
