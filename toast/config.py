@@ -47,6 +47,15 @@ def validate_config():
         if len(slice_keys - slice_allowed_keys) > 0:
             print(f"Warning: unrecognised keys in slice '{s['upstream']}':", ",".join(slice_keys - slice_allowed_keys))
 
+        if not os.path.exists(s['path']):
+            print(f"Warning: file not found: {s['path']}.")
+
+        if not os.path.exists(os.path.join(s['path'], '.git')):
+            print(f"{s['path']} is not a Git repository.")
+            exit(4)
+
+        
+
 validate_config()
 apply_defaults()
 
@@ -56,3 +65,14 @@ def get_slice(repo_fullname : str) -> Union[dict,None]:
         if s.get("upstream", None) == repo_fullname:
             return s
     return None
+
+def get_toastfile(path : str) -> Union[dict,None]:
+    filenames = ["toastfile.yml", "toastfile.yaml", ".toastfile.yml", ".toastfile.yaml", ".toastfile"]
+
+    if not os.path.exists(path) or not os.path.isdir(path):
+        print(f"Not a directory: {path}")
+        return None
+
+    for fn in filenames:
+        if os.path.exists(os.path.join(path, fn)):
+            return os.path.join(path, fn)
