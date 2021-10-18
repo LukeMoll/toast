@@ -1,5 +1,4 @@
 import hmac
-import hashlib
 
 from flask import Request
 

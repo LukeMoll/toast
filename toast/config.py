@@ -37,7 +37,7 @@ def validate_config():
         print("Warning: no slices configured")
 
     slice_required_keys = {'upstream', 'path'}
-    slice_allowed_keys = {*slice_required_keys, 'secret'}
+    slice_allowed_keys = {*slice_required_keys, 'secret', 'remote-name', 'branch'}
     for s in config['slice']:
         slice_keys = set(s.keys())
         if len(slice_required_keys - slice_keys) > 0:
