@@ -7,6 +7,7 @@
  - Core:
    - Config parser: TOML
    - Webhook server, decode GitHub payload, and validate against GitHub secret
+     - Flask and some Python production server; fully encapsulated by entry point
    - Ansible-runner
      - Allow templating vars:
        - {Name, path} of *Repo*
