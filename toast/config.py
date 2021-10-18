@@ -19,8 +19,36 @@ if not os.path.exists(_config_fn):
 with open(_config_fn) as fd:
     config = toml.load(fd)
 
-if "slice" not in config:
-    print("Warning: no slices configured")
+
+def apply_defaults():
+    if "toast" not in config:
+        config["toast"] = dict()
+
+    if "port" not in config["toast"]:
+        config["toast"]["port"] = 12345
+
+def validate_config():
+    allowed_sections = {"toast", "slice"}
+    keys = set(config.keys())
+    if len(keys - allowed_sections) > 0:
+        print("Warning: unrecognised sections: " + ",".join(keys - allowed_sections))
+
+    if "slice" not in config:
+        print("Warning: no slices configured")
+
+    slice_required_keys = {'upstream', 'path'}
+    slice_allowed_keys = {*slice_required_keys, 'secret'}
+    for s in config['slice']:
+        slice_keys = set(s.keys())
+        if len(slice_required_keys - slice_keys) > 0:
+            print("Missing required keys in slice:", ",".join(slice_required_keys-slice_keys))
+            exit(3)
+
+        if len(slice_keys - slice_allowed_keys) > 0:
+            print(f"Warning: unrecognised keys in slice '{s['upstream']}':", ",".join(slice_keys - slice_allowed_keys))
+
+validate_config()
+apply_defaults()
 
 def get_slice(repo_fullname : str) -> Union[dict,None]:
     repo_fullname = repo_fullname.lower()
