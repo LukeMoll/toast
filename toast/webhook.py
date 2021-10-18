@@ -27,9 +27,13 @@ def hook_github():
         if "X-Hub-Signature-256" not in request.headers:
             return "Missing header: X-Hub-Signature-256", 400
 
-        if not validate_payload(request, slice['secret']):
+        if not validate_payload(request, slice_cfg['secret']):
             return "Signature mismatch (X-Hub-Signature-256)", 400
 
+    ##
+    from .action import update_repository
+    update_repository(slice_cfg)
+    ##
     return "", 204
 
 @app.route('/')
