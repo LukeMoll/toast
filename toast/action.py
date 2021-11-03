@@ -4,7 +4,7 @@ import pygit2
 
 
 def clone_repository(s: dict):
-    pass
+    pygit2.clone_repository(f"https://github.com/{s['upstream']}.git", s['path'], )
 
 def get_remote(repo : pygit2.Repository, s: dict) -> pygit2.Remote:
     remote_name = s.get("remote-name", "origin")
@@ -32,8 +32,7 @@ def get_remote_branch(repo : pygit2.Repository, s: dict, remote: pygit2.Remote) 
 
 def update_repository(s: dict):
     if not os.path.exists(s['path']):
-        raise FileNotFoundError(s['path'])
-        # TODO: handle this...
+        print(f"No git repository at {s['path']}, cloning now...")
         clone_repository(s)
 
     repo = pygit2.Repository(s['path'])

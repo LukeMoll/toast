@@ -51,9 +51,7 @@ def validate_config():
             print(f"Warning: file not found: {s['path']}.")
 
         if not os.path.exists(os.path.join(s['path'], '.git')):
-            print(f"{s['path']} is not a Git repository.")
-            exit(4)
-
+            print(f"Warning: {s['path']} is not a Git repository.")
         
 
 validate_config()
@@ -66,15 +64,14 @@ def get_slice(repo_fullname : str) -> Union[dict,None]:
             return s
     return None
 
-def get_toastfile(path : str) -> Union[str,None]:
+def get_toastfile(path : str) -> str:
     filenames = ["toastfile.yml", "toastfile.yaml", ".toastfile.yml", ".toastfile.yaml", ".toastfile"]
 
     if not os.path.exists(path) or not os.path.isdir(path):
-        print(f"Not a directory: {path}")
-        return None
+        raise NotADirectoryError(path)
 
     for fn in filenames:
         if os.path.exists(os.path.join(path, fn)):
             return os.path.join(path, fn)
     
-    return None
+    raise FileNotFoundError(f"No toastfile found under {path}")
