@@ -6,13 +6,19 @@ from .github import validate_payload
 
 app = Flask(__name__)
 
-@app.post('/hook/github/')
+
+@app.post("/hook/github/")
 def hook_github():
     if "X-GitHub-Event" not in request.headers:
         return "Missing header: X-GitHub-Event", 400
-    
+
+    if request.headers["X-GitHub-Event"] == "ping":
+        print("Recieved 'ping' event from GitHub")
+        return "pong", 200
+
     if request.headers["X-GitHub-Event"] != "push":
-        return f"Unsupported event: {request.headers['X-GitHub-Event']}", 400
+        # return f"Unsupported event: {request.headers['X-GitHub-Event']}", 400
+        print(f"Allowing unsupported event: {request.headers['X-GitHub-Event']}")
 
     body = request.get_json()
     if body is None:
@@ -27,15 +33,19 @@ def hook_github():
         if "X-Hub-Signature-256" not in request.headers:
             return "Missing header: X-Hub-Signature-256", 400
 
-        if not validate_payload(request, slice_cfg['secret']):
+        if not validate_payload(request, slice_cfg["secret"]):
             return "Signature mismatch (X-Hub-Signature-256)", 400
 
     ##
     from .action import update_repository
+    from .ansible import run_slice
+
     update_repository(slice_cfg)
+    run_slice(slice_cfg)
     ##
     return "", 204
 
-@app.route('/')
+
+@app.route("/")
 def index():
     return "Hello, world!"
