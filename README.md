@@ -17,6 +17,8 @@ Toast
        - Nginx sub{path,domain}
          - Webroot or proxy
          - Path or domain
+     - Mutex/lock per-Slice
+       - Queue operations from route handler for another thread to work through?
    - Git(Hub) wrangler
  - Docs/etc:
    - Systemd unit (example)
