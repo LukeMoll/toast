@@ -4,29 +4,32 @@ Toast
 *A tool to manage continuous deployments of web apps using Ansible*
 
 ## Components
- - Core:
-   - Config parser: TOML
-   - Webhook server, decode GitHub payload, and validate against GitHub secret
-     - Flask and some Python production server; fully encapsulated by entry point
-   - Ansible-runner
-     - Allow templating vars:
-       - {Name, path} of *Repo*
-       - Basically everything from Toast *Repo* section
-     - Ansible roles
-       - Pass to -runner
-       - Nginx sub{path,domain}
-         - Webroot or proxy
-         - Path or domain
-     - Mutex/lock per-Slice
-       - Queue operations from route handler for another thread to work through?
-   - Git(Hub) wrangler
- - Docs/etc:
-   - Systemd unit (example)
-   - Nginx config (example)
- - Extended:
-   - Status datastructure
-   - CLI client
-   - Web dashboard client
+ - [ ] Core:
+   - [x] Config parser: TOML
+   - [x] Webhook server, decode GitHub payload, and validate against GitHub secret
+     - [x] Flask and some Python production server; fully encapsulated by entry point
+   - [ ] Ansible-runner
+     - [ ] Allow templating vars:
+       - x] {Name, Wpath} of *Repo*
+       - [x] Basically everything from Toast *Repo* section
+     - [ ] Ansible roles
+       - [x] Pass to -runner
+       - [ ] Nginx sub{path,domain}
+         - [ ] Webroot or proxy
+         - [ ] Path or domain
+     - [ ] Mutex/lock per-Slice
+       - [x] Queue operations from route handler for another thread to work through?
+       - [ ] De-duplicate slice operations
+   - [ ] Git(Hub) wrangler
+     - [ ] Handle SSH remotes (ooer)
+     - [ ] Handle private repos
+ - [ ] Docs/etc:
+   - [ ] Systemd unit (example)
+   - [ ] Nginx config (example)
+ - [ ] Extended:
+   - [ ] Status datastructure
+   - [ ] CLI client
+   - [ ] Web dashboard client
 
 ## toast.conf
  - TOML file with sections per *Repo* (better terminology needed; "Slice"?)
