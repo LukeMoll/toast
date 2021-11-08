@@ -6,8 +6,7 @@ from .github import validate_payload
 
 app = Flask(__name__)
 
-from .action import update_repository
-from .ansible import run_slice
+from .ansible import worker
 
 
 @app.post("/hook/github/")
@@ -40,8 +39,7 @@ def hook_github():
             return "Signature mismatch (X-Hub-Signature-256)", 400
 
     ##
-    update_repository(slice_cfg)
-    run_slice(slice_cfg)
+    worker.queue_slice(slice_cfg)
     ##
     return "", 204
 
