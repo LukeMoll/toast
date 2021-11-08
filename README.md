@@ -10,8 +10,8 @@ Toast
      - [x] Flask and some Python production server; fully encapsulated by entry point
    - [ ] Ansible-runner
      - [ ] Allow templating vars:
-       - x] {Name, Wpath} of *Repo*
-       - [x] Basically everything from Toast *Repo* section
+       - x] {Name, Wpath} of Slice
+       - [x] Basically everything from Toast Slice section
      - [ ] Ansible roles
        - [x] Pass to -runner
        - [ ] Nginx sub{path,domain}
@@ -32,20 +32,19 @@ Toast
    - [ ] Web dashboard client
 
 ## toast.conf
- - TOML file with sections per *Repo* (better terminology needed; "Slice"?)
+ - TOML file with sections per Slice
  - Each section:
    - A (GitHub) repository identifier (`<org>/<name>`) to:
      - Match against `push` payload
      - Poll for changes
    - A path to the cloned repository root
-     - Wisdom on trailing slash convention? 
-     - Will **always** be a directory so can probably be ignored
+     - Trailing slash removed by `os.normpath`
    - Name of the deployed branch
    - (optional) a GitHub Secret
    - (optional) GitHub Deploy key for private repository polling
    - Deployment options:
-     - Port number
+     - `vars` section to be interpreted by playbooks
  - Toast section:
    - Port number
- - Ansible globals
+ - Ansible globals (`toast.vars`)
    - Passed to each invocation
