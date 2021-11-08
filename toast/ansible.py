@@ -2,6 +2,12 @@ import ansible_runner
 
 from .config import get_toastfile, config
 
+import os
+
+ROLES_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), os.pardir, "roles")
+)
+
 
 def run_slice(s: dict):
     playbook = get_toastfile(s["path"])
@@ -17,6 +23,6 @@ def run_slice(s: dict):
     r = ansible_runner.run(
         playbook=playbook,
         inventory=[],
-        roles_path=[],
+        roles_path=[ROLES_DIR],
         extravars=vars_dict,
     )
