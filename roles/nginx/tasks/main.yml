@@ -1,0 +1,19 @@
+---
+- name: Entry point
+  debug:
+    msg: "Nginx entry point!"
+- name: Assertions
+  assert:
+    that:
+      - (subpath is not defined) or (subdomain is not defined)
+      - (subpath is defined) or (subdomain is defined)
+    fail_msg: "Must define exactly one of subdomain and subpath"
+- name: Template server block(s)
+  template:
+    src: subdomain.conf.jinja2
+    dest: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
+  when: subdomain is defined
+- name: Template location block
+  debug:
+    msg: "Templating a location block"
+  when: subpath is defined

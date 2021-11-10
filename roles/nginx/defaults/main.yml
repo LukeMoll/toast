@@ -1,0 +1,3 @@
+---
+nginx_sites_available: /tmp
+nginx_sites_enabled: False
