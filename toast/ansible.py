@@ -3,6 +3,8 @@ import ansible_runner
 from .config import get_toastfile, config
 from .action import update_repository
 
+from .data import roles
+
 import os, time
 
 from threading import Thread, current_thread
@@ -11,9 +13,7 @@ from queue import Empty
 
 from typing import Callable, Iterable, Mapping, Any, Optional
 
-ROLES_DIR = os.path.normpath(
-    os.path.join(os.path.dirname(__file__), os.pardir, "roles")
-)
+ROLES_DIR = os.path.normpath(os.path.dirname(roles.__file__))
 
 
 def run_slice(s: dict):
