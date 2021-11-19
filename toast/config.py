@@ -2,16 +2,26 @@ from typing import Union
 import toml
 import os
 
-if "TOAST_CONFIG" not in os.environ:
-    print("Environment variable TOAST_CONFIG not set")
+
+def resolve_config_fn() -> str:
+    if "TOAST_CONFIG" in os.environ:
+        print("Environment variable TOAST_CONFIG found")
+        fn = os.environ["TOAST_CONFIG"]
+        if not os.path.isabs(fn):
+            print(f"Warning: {fn} is relative")
+            fn = os.path.abspath(fn)
+            print(f"Canonicalizing to {fn}")
+        return fn
+    else:
+        for fn in [os.path.expanduser("~/.local/toast.conf"), "/etc/toast.conf"]:
+            if os.path.exists(fn):
+                print(f"Found config in {fn}")
+                return os.path.abspath(fn)
+    print("No config found!")
     exit(1)
 
-_config_fn = os.environ["TOAST_CONFIG"]
-if not os.path.isabs(_config_fn):
-    print(f"Warning: {_config_fn} is relative")
-    _config_fn = os.path.abspath(_config_fn)
-    print(f"Canonicalizing to {_config_fn}")
 
+_config_fn = resolve_config_fn()
 if not os.path.exists(_config_fn):
     print(f"Toast config {_config_fn} does not exist")
     exit(2)
