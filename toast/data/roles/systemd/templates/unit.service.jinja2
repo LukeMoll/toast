@@ -1,0 +1,34 @@
+[Unit]
+Description={{ description }}
+{% if on_failure is defined %}
+OnFailure={{on_failure}}
+{% endif %}
+
+{% if unit_extra is defined %}
+{% for key, value in unit_extra.items() %}
+{{key}}={{value}}
+{% endfor %}
+{% endif %}
+
+[Service]
+Type={% if type is defined %}{{ type }}{% else %}simple{% endif %}
+{% if type == 'forking' %}
+PIDFile={{ pidfile }}
+{% endif %}
+ExecStart={{ exec_start }}
+Restart={% if restart is defined %}{{ restart }}{% else %}always{% endif %}
+
+{% if service_extra is defined %}
+{% for key, value in service_extra.items() %}
+{{key}}={{value}}
+{% endfor %}
+{% endif %}
+
+[Install]
+WantedBy={% if wanted_by is defined %}{{ wanted_by }}{% else %}multi-user.target{% endif %}
+
+{% if install_extra is defined %}
+{% for key, value in install_extra.items() %}
+{{key}}={{value}}
+{% endfor %}
+{% endif %}

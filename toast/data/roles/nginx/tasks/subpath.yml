@@ -1,0 +1,17 @@
+- name: Assertions
+  assert:
+    that:
+      - location_block_dir is defined
+    fail_msg: "Must define location_block_dir"
+- name: "Stat {{ location_block_dir }}"
+  stat:
+    path: "{{ location_block_dir }}"
+  register: out
+- name: Fail when location block dir does not exist
+  fail:
+    msg: "{{ location_block_dir }} does not exist!"
+  when: out.stat.exists == false
+- name: Template location block
+  template:
+    src: subpath.conf.jinja2
+    dest: "{{ ( location_block_dir, subpath | replace('/','-') + '.conf') | path_join }}"

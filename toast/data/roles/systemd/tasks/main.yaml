@@ -1,0 +1,28 @@
+---
+- name: Assertions
+  assert:
+    that:
+      - service_name is defined
+      - service_description is defined
+      - exec_start is defined
+    fail_msg: "Must define service_name, service_description, exec_start"
+- name: Create systemd directories
+  file:
+    path: "{{systemd_unitfile_path}}"
+    state: directory
+    mode: "755"
+    owner: root
+    group: root
+    become: yes
+- name: Template service file
+  template:
+    src: unit.service.jinja2
+    dest: "{{ (systemd_unitfile_path, service_name + '.service') | path_join }}"
+    become: yes
+- name: Enable and restart new service
+  systemd:
+    name: "{{ service_name }}"
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+    become: yes

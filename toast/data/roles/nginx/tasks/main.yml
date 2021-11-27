@@ -1,7 +1,4 @@
 ---
-- name: Entry point
-  debug:
-    msg: "Nginx entry point!"
 - name: Assertions
   assert:
     that:
@@ -13,7 +10,6 @@
     src: subdomain.conf.jinja2
     dest: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
   when: subdomain is defined
-- name: Template location block
-  debug:
-    msg: "Templating a location block"
+- name: Call subpath tasks
+  import_tasks: subpath.yml
   when: subpath is defined
