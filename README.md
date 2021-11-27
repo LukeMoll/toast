@@ -3,14 +3,21 @@ Toast
 
 *A tool to manage continuous deployments of web apps using Ansible*
 
+## Installation
+```
+pip install shiv
+git clone git@github.com:LukeMoll/toast
+shiv -c toast -o ./toast.shiv ./toast
+```
+
 ## Components
  - [ ] Core:
    - [x] Config parser: TOML
    - [x] Webhook server, decode GitHub payload, and validate against GitHub secret
      - [x] Flask and some Python production server; fully encapsulated by entry point
    - [ ] Ansible-runner
-     - [ ] Allow templating vars:
-       - x] {Name, Wpath} of Slice
+     - [x] Allow templating vars:
+       - [x] {Name, Wpath} of Slice
        - [x] Basically everything from Toast Slice section
      - [ ] Ansible roles
        - [x] Pass to -runner
@@ -48,3 +55,23 @@ Toast
    - Port number
  - Ansible globals (`toast.vars`)
    - Passed to each invocation
+
+## CLI
+Commands: 
+ - `status`:
+   - is toastd running
+   - For each slice:
+     - Does it exist on disk?
+     - Is is up-to-date with the local remote?
+     - (?) how long since the last `fetch`?¹
+     - Did the last ansible run without error?¹
+     - ¹ This would be best kept in some kind of log...
+ - `fetch`:
+   - Force-fetch on slice(s)
+ - `run`:
+   - Force-run slice
+
+IPC endpoint drops anything not from 127.0.0.1
+
+## Installation
+Possibly `shiv`
