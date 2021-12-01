@@ -12,7 +12,7 @@ OnFailure={{on_failure}}
 
 [Service]
 Type={% if type is defined %}{{ type }}{% else %}simple{% endif %}
-{% if type == 'forking' %}
+{% if type is defined and type == 'forking' %}
 PIDFile={{ pidfile }}
 {% endif %}
 ExecStart={{ exec_start }}
