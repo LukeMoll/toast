@@ -23,7 +23,7 @@ server {
     #}
 
     {%- if webroot is defined %}
-    alias {{webroot}};
+    alias {{webroot|regex_replace('/$','')}}/;
     # bottom text
     {% endif %}
 

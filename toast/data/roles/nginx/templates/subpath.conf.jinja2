@@ -1,6 +1,6 @@
 location /{{subpath | regex_replace('(^/|/$)', '') | path_join}}/ {
     {% if webroot is defined %}
-    alias {{webroot}};
+    alias {{webroot|regex_replace('/$','')}}/;
     {% endif %}
 
     {% if proxy_pass is defined %}
