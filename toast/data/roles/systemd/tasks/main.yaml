@@ -13,16 +13,16 @@
     mode: "755"
     owner: root
     group: root
-    become: yes
+  become: yes
 - name: Template service file
   template:
     src: unit.service.jinja2
     dest: "{{ (systemd_unitfile_path, service_name + '.service') | path_join }}"
-    become: yes
+  become: yes
 - name: Enable and restart new service
   systemd:
     name: "{{ service_name }}"
     daemon_reload: yes
     state: restarted
     enabled: yes
-    become: yes
+  become: yes
