@@ -1,4 +1,4 @@
-location /{{subpath | regex_replace('(^/|/$)', '') | }}/ {
+location /{{subpath | regex_replace('(^/|/$)', '') | path_join}}/ {
     {% if webroot is defined %}
     root {{webroot}};
     {% endif %}
