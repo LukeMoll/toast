@@ -14,4 +14,4 @@
 - name: Template location block
   template:
     src: subpath.conf.jinja2
-    dest: "{{ ( location_block_dir, subpath | replace('/','-') + '.conf') | path_join }}"
+    dest: "{{ ( location_block_dir, subpath | replace('/','-') + '.locations') | path_join }}"

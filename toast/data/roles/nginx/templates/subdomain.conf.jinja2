@@ -23,7 +23,7 @@ server {
     #}
 
     {%- if webroot is defined %}
-    root {{webroot}};
+    alias {{webroot}};
     # bottom text
     {% endif %}
 
