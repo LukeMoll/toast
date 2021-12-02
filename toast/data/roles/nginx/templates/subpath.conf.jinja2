@@ -5,6 +5,6 @@ location /{{subpath | regex_replace('(^/|/$)', '') | path_join}}/ {
 
     {% if proxy_pass is defined %}
     proxy_set_header Host $host;
-    proxy_pass: {{proxy_pass}};
+    proxy_pass {{proxy_pass}};
     {% endif %}
 }
