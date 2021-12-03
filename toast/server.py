@@ -34,7 +34,7 @@ def main():
     worker.start()
 
     if "--reload" in sys.argv:
-        for slice in config.slice:
+        for slice in config["slice"]:
             worker.queue_slice(slice)
 
     StandaloneApplication(app, options=options).run()
