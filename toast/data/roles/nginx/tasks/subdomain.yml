@@ -13,3 +13,4 @@
   file:
     src: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
     dest: "{{ (nginx_sites_enabled, subdomain + '.conf') | path_join }}"
+    state: link
