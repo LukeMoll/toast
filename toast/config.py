@@ -44,7 +44,7 @@ def validate_config():
     if len(keys - allowed_sections) > 0:
         print("Warning: unrecognised sections: " + ",".join(keys - allowed_sections))
 
-    toast_allowed_keys = {"port", "globals"}
+    toast_allowed_keys = {"port", "vars"}
     toast_keys = set(config["toast"].keys())
     if len(toast_keys - toast_allowed_keys) > 0:
         print(

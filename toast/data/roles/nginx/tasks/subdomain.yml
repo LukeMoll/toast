@@ -9,3 +9,7 @@
   template:
     src: subdomain.conf.jinja2
     dest: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
+- name: Enable config
+  file:
+    src: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
+    dest: "{{ (nginx_sites_enabled, subdomain + '.conf') | path_join }}"
