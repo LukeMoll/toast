@@ -24,14 +24,15 @@ server {
         will be defined 
     #}
 
-    {%- if webroot is defined %}
-    alias {{webroot|regex_replace('/$','')}}/;
-    # bottom text
-    {% endif %}
+    location / {
+        {%- if webroot is defined %}
+        alias {{webroot|regex_replace('/$','')}}/;
+        # bottom text
+        {% endif %}
 
-    {%- if proxy_pass is defined %}
-    proxy_set_header Host $host;
-    proxy_pass {{proxy_pass}};
-    {% endif -%}
-
+        {%- if proxy_pass is defined %}
+        proxy_set_header Host $host;
+        proxy_pass {{proxy_pass}};
+        {% endif -%}
+    }
 }
