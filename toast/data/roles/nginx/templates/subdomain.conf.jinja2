@@ -15,7 +15,9 @@ server {
     server_name {{ subdomain }};
 
     charset utf-8;
-    {# Need SSL certificate, _key, trusted_certificate #}
+    ssl_certificate                 {{ ssl.fullchain }};
+    ssl_trusted_certificate         {{ ssl.fullchain }};
+    ssl_certificate_key             {{ ssl.key }};
 
     {#  
         only one of `webroot` and `proxypass`

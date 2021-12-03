@@ -1,0 +1,11 @@
+- name: Assertions
+  assert:
+    that:
+      - ssl is defined
+      - 'fullchain' in ssl
+      - 'key' in ssl
+    fail_msg: "Must define SSL certificate paths in ssl.fullchain and ssl.key!"
+- name: Template server block(s)
+  template:
+    src: subdomain.conf.jinja2
+    dest: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"

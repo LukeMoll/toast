@@ -2,6 +2,7 @@ import gunicorn.app.base
 
 from .webhook import app
 from .config import config
+import sys
 
 # https://docs.gunicorn.org/en/stable/custom.html
 
@@ -31,6 +32,11 @@ def main():
     from .ansible import worker
 
     worker.start()
+
+    if "--reload" in sys.argv:
+        for slice in config.slice:
+            worker.queue_slice(slice)
+
     StandaloneApplication(app, options=options).run()
 
 

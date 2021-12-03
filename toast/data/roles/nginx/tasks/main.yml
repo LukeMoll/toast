@@ -1,15 +1,27 @@
 ---
-- name: Assertions
+- name: Assertions (subpath, subdomain)
   assert:
     that:
       - (subpath is not defined) or (subdomain is not defined)
       - (subpath is defined) or (subdomain is defined)
     fail_msg: "Must define exactly one of subdomain and subpath"
-- name: Template server block(s)
-  template:
-    src: subdomain.conf.jinja2
-    dest: "{{ (nginx_sites_available, subdomain + '.conf') | path_join }}"
+- name: Assertions (webroot, proxy_pass)
+  assert:
+    that:
+      - (webroot is not defined) or (proxy_pass is not defined)
+      - (webroot is defined) or (proxy_pass is defined)
+    fail_msg: "Must define exactly one of webroot and proxy_pass"
+- name: Call subdomain tasks
+  import_tasks: subdomain.yml
   when: subdomain is defined
 - name: Call subpath tasks
   import_tasks: subpath.yml
   when: subpath is defined
+- name: Validate nginx config
+  shell: nginx -t
+  become: yes
+- name: Restart nginx
+  service: 
+    name: nginx
+    state: reloaded
+  become: yes
