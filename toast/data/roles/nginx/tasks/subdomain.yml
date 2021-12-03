@@ -2,8 +2,8 @@
   assert:
     that:
       - ssl is defined
-      - 'fullchain' in ssl
-      - 'key' in ssl
+      - "'fullchain' in ssl"
+      - "'key' in ssl"
     fail_msg: "Must define SSL certificate paths in ssl.fullchain and ssl.key!"
 - name: Template server block(s)
   template:
